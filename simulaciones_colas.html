@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulaciones de Colas - Skynet</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #181c24; color: #f0f0f0; margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: 40px auto; background: #232a36; border-radius: 10px; box-shadow: 0 0 20px #0008; padding: 32px; }
+        h1, h2 { color: #00e0ff; }
+        button { background: #00e0ff; color: #181c24; border: none; padding: 10px 24px; border-radius: 5px; font-size: 1rem; margin: 10px 0; cursor: pointer; }
+        button:hover { background: #00b8cc; }
+        pre { background: #11151c; color: #00ff90; padding: 16px; border-radius: 6px; overflow-x: auto; }
+        .section { margin-bottom: 32px; }
+        .logo { width: 60px; vertical-align: middle; margin-right: 12px; }
+        .tooltip { position: relative; display: inline-block; cursor: pointer; }
+        .tooltip .tooltiptext { visibility: hidden; width: 220px; background: #222e3a; color: #fff; text-align: left; border-radius: 6px; padding: 8px; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -110px; opacity: 0; transition: opacity 0.3s; font-size: 0.95em; }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+        .footer { text-align: center; color: #aaa; font-size: 0.95em; margin-top: 40px; padding-top: 16px; border-top: 1px solid #222; }
+        .param-input { width: 60px; padding: 4px; border-radius: 4px; border: 1px solid #00e0ff; background: #181c24; color: #fff; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" class="logo" alt="Skynet Logo">Simulaciones de Colas - Skynet</h1>
+        <div style="background:#1a2230; padding:18px 20px; border-radius:8px; margin-bottom:32px;">
+            <h2 style="color:#00e0ff; margin-top:0;">Resumen del Proyecto</h2>
+            <p>Este proyecto simula el uso de <b>colas</b> en sistemas inteligentes aplicados a seguridad, fabricación e inventario de partes de robots Skynet. Las colas permiten gestionar flujos de eventos, procesos y recursos de manera eficiente, modelando situaciones reales de la industria y la robótica.</p>
+            <ul style="line-height:1.7;">
+                <li><b>Control de acceso:</b> Simula la gestión de solicitudes de entrada a instalaciones seguras.</li>
+                <li><b>Línea de ensamblaje:</b> Modela el paso de productos por distintas etapas de fabricación.</li>
+                <li><b>Inventario de partes:</b> Administra el stock y consumo de componentes críticos de robots Skynet.</li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>1. Control de Acceso (Seguridad)</h2>
+            <button onclick="runAccessSimulation()">Ejecutar Simulación</button>
+            <pre id="accessOutput"></pre>
+            <div style="margin-top:10px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/3062/3062634.png" alt="Acceso" width="40" style="vertical-align:middle; margin-right:10px;">
+                <span class="tooltip">¿Cómo funciona?
+                    <span class="tooltiptext">Cada persona solicita acceso y espera en una cola. El sistema procesa cada solicitud y decide si autoriza o deniega la entrada, simulando un control de seguridad real.</span>
+                </span>
+            </div>
+        </div>
+        <div class="section">
+            <h2>2. Línea de Ensamblaje (Fabricación)</h2>
+            <div style="margin-bottom:8px;">
+                <label for="prodCount">Cantidad de productos:</label>
+                <input type="number" id="prodCount" class="param-input" min="1" max="10" value="3">
+                <label for="stageCount">Etapas:</label>
+                <input type="text" id="stageCount" class="param-input" value="Corte,Soldadura,Pintura">
+                <button onclick="runAssemblySimulation()">Ejecutar Simulación</button>
+            </div>
+            <pre id="assemblyOutput"></pre>
+            <div style="margin-top:10px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" alt="Fábrica" width="40" style="vertical-align:middle; margin-right:10px;">
+                <span class="tooltip">¿Cómo funciona?
+                    <span class="tooltiptext">Cada producto entra en una cola y pasa por varias etapas de ensamblaje. Puedes modificar la cantidad de productos y las etapas para ver cómo cambia el flujo.</span>
+                </span>
+            </div>
+        </div>
+        <div class="section">
+            <h2>3. Inventario de Partes de Robots Skynet</h2>
+            <div style="margin-bottom:8px;">
+                <label for="cpuCount">CPU:</label>
+                <input type="number" id="cpuCount" class="param-input" min="0" max="20" value="5">
+                <label for="sensorCount">Sensor óptico:</label>
+                <input type="number" id="sensorCount" class="param-input" min="0" max="20" value="10">
+                <label for="actuatorCount">Actuador hidráulico:</label>
+                <input type="number" id="actuatorCount" class="param-input" min="0" max="20" value="7">
+                <button onclick="runInventorySimulation()">Ejecutar Simulación</button>
+            </div>
+            <pre id="inventoryOutput"></pre>
+            <div style="margin-top:18px; background:#1a2230; padding:16px; border-radius:6px; color:#fff;">
+                <h3 style="color:#00e0ff; margin-top:0;">Explicación de cada repuesto:</h3>
+                <ul style="line-height:1.7;">
+                    <li><img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" width="22" style="vertical-align:middle;"> <b>CPU:</b> Es el cerebro del robot, encargado de procesar información, tomar decisiones y coordinar todas las funciones del sistema.</li>
+                    <li><img src="https://cdn-icons-png.flaticon.com/512/3062/3062634.png" width="22" style="vertical-align:middle;"> <b>Sensor óptico:</b> Permite al robot percibir su entorno mediante la detección de luz, colores, formas y movimientos, esencial para navegación y reconocimiento de objetos.</li>
+                    <li><img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" width="22" style="vertical-align:middle;"> <b>Actuador hidráulico:</b> Proporciona movimiento y fuerza a las extremidades o mecanismos del robot, permitiendo realizar tareas físicas como levantar, empujar o ensamblar piezas.</li>
+                </ul>
+                <p style="color:#00ff90; margin:0;">Cada repuesto es gestionado en una cola de inventario, simulando el flujo y consumo de partes en la fabricación y mantenimiento de robots Skynet.</p>
+            </div>
+            <div style="margin-top:10px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Inventario" width="40" style="vertical-align:middle; margin-right:10px;">
+                <span class="tooltip">¿Cómo funciona?
+                    <span class="tooltiptext">Puedes modificar la cantidad inicial de cada repuesto. El sistema simula el consumo y muestra el inventario restante, gestionando el stock como en una fábrica real.</span>
+                </span>
+            </div>
+        </div>
+        <div class="section" style="background:#1a2230; padding:18px 20px; border-radius:8px;">
+            <h2 style="color:#00e0ff; margin-top:0;">Conclusiones</h2>
+            <ul style="line-height:1.7;">
+                <li>Las <b>colas</b> son fundamentales para modelar procesos secuenciales y gestionar recursos en sistemas inteligentes.</li>
+                <li>Permiten simular situaciones reales de la industria, optimizando el flujo de trabajo y la toma de decisiones.</li>
+                <li>El uso de colas en robótica y fabricación ayuda a evitar cuellos de botella y mejorar la eficiencia operativa.</li>
+            </ul>
+        </div>
+        <div class="footer">
+            Proyecto Skynet &copy; 2025 &mdash; Desarrollado por santiagovargas117-create<br>
+            <a href="https://github.com/santiagovargas117-create/proyecto-skynet" style="color:#00e0ff;">Repositorio en GitHub</a>
+        </div>
+    </div>
+    <script>
+        function runAccessSimulation() {
+            const output = [
+                'Solicitud de acceso recibida: Ana',
+                'Solicitud de acceso recibida: Luis',
+                'Solicitud de acceso recibida: Marta',
+                'Solicitud de acceso recibida: Pedro',
+                '',
+                'Procesando solicitudes de acceso:',
+                'Procesando: Ana - Autorizado',
+                'Procesando: Luis - Denegado',
+                'Procesando: Marta - Autorizado',
+                'Procesando: Pedro - Denegado',
+            ];
+            document.getElementById('accessOutput').textContent = output.join('\n');
+        }
+        function runAssemblySimulation() {
+            const prodCount = parseInt(document.getElementById('prodCount').value) || 1;
+            const stages = document.getElementById('stageCount').value.split(',').map(s => s.trim()).filter(Boolean);
+            let output = [];
+            for (let i = 1; i <= prodCount; i++) {
+                output.push(`Producto en cola: ${i}`);
+            }
+            output.push('');
+            output.push('Procesando línea de ensamblaje:');
+            for (let i = 1; i <= prodCount; i++) {
+                let etapas = [];
+                for (const stage of stages) {
+                    output.push(`Producto ${i} en etapa: ${stage}`);
+                    etapas.push(stage);
+                }
+                output.push(`Producto ${i} - Etapas: ${etapas.join(', ')}`);
+                output.push('');
+            }
+            document.getElementById('assemblyOutput').textContent = output.join('\n');
+        }
+        function runInventorySimulation() {
+            const cpu = parseInt(document.getElementById('cpuCount').value) || 0;
+            const sensor = parseInt(document.getElementById('sensorCount').value) || 0;
+            const actuator = parseInt(document.getElementById('actuatorCount').value) || 0;
+            let output = [];
+            output.push(`Agregadas ${cpu} unidades de CPU al inventario.`);
+            output.push(`Agregadas ${sensor} unidades de Sensor óptico al inventario.`);
+            output.push(`Agregadas ${actuator} unidades de Actuador hidráulico al inventario.`);
+            output.push('');
+            output.push('Inventario actual de partes de robots Skynet:');
+            output.push(`- CPU: ${cpu} unidades`);
+            output.push(`- Sensor óptico: ${sensor} unidades`);
+            output.push(`- Actuador hidráulico: ${actuator} unidades`);
+            output.push('');
+            // Simulación de consumo
+            let cpuLeft = cpu, sensorLeft = sensor, actuatorLeft = actuator;
+            if (cpuLeft >= 2) { cpuLeft -= 2; output.push('Usadas 2 unidades de CPU.'); } else { output.push('No hay suficiente stock de CPU.'); }
+            if (sensorLeft >= 4) { sensorLeft -= 4; output.push('Usadas 4 unidades de Sensor óptico.'); } else { output.push('No hay suficiente stock de Sensor óptico.'); }
+            if (actuatorLeft >= 1) { actuatorLeft -= 1; output.push('Usadas 1 unidades de Actuador hidráulico.'); } else { output.push('No hay suficiente stock de Actuador hidráulico.'); }
+            output.push('');
+            output.push('Inventario actual de partes de robots Skynet:');
+            output.push(`- CPU: ${cpuLeft} unidades`);
+            output.push(`- Sensor óptico: ${sensorLeft} unidades`);
+            output.push(`- Actuador hidráulico: ${actuatorLeft} unidades`);
+            output.push('');
+            // Intento de consumir más CPUs de las disponibles
+            if (cpuLeft >= 4) { cpuLeft -= 4; output.push('Usadas 4 unidades de CPU.'); } else { output.push('No hay suficiente stock de CPU.'); }
+            output.push('');
+            output.push('Inventario actual de partes de robots Skynet:');
+            output.push(`- CPU: ${cpuLeft} unidades`);
+            output.push(`- Sensor óptico: ${sensorLeft} unidades`);
+            output.push(`- Actuador hidráulico: ${actuatorLeft} unidades`);
+            document.getElementById('inventoryOutput').textContent = output.join('\n');
+        }
+    </script>
+</body>
+</html>
